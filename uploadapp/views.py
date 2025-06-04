@@ -99,6 +99,7 @@ class DownloadFileView(APIView):
     def get(request, file_id, pk):
         file_obj = UploadedFile.objects.get(pk=pk)
         file_path = file_obj.file.path
+        print("filepath",file_path)
         file_name = os.path.basename(file_path)
         
         content_type, _ = mimetypes.guess_type(file_path)
@@ -107,10 +108,12 @@ class DownloadFileView(APIView):
 
         with open(file_path, 'rb') as f:
             file_data = f.read()
+            # print("filedata",file_data)
 
-        response = FileResponse(file_data, content_type=content_type,as_attachment=False)
+        response = HttpResponse(file_data, content_type=content_type)
         
-        # response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+        
+        response['Content-Disposition'] = f'attachment; filename="{file_name}"'
         response['Content-Length'] = os.path.getsize(file_path)
         
         # response['X-Filename'] = file_name
