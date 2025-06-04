@@ -113,7 +113,7 @@ class DownloadFileView(APIView):
         response = HttpResponse(file_data, content_type=content_type)
         
         
-        response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+        response['Content-Disposition'] = f'inline; filename="{file_name}"'
         response['Content-Length'] = os.path.getsize(file_path)
         
         # response['X-Filename'] = file_name
